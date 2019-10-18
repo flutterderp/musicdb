@@ -3,10 +3,13 @@
 -- Model: New Model    Version: 1.0
 -- MySQL Workbench Forward Engineering
 
+DROP TABLE IF EXISTS `msc_album_tracks`;
+DROP TABLE IF EXISTS `msc_albums`;
+DROP TABLE IF EXISTS `msc_artists`;
+
 -- -----------------------------------------------------
 -- Table `msc_artists`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `msc_artists`;
 
 CREATE TABLE IF NOT EXISTS `msc_artists` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -41,7 +44,6 @@ FOR EACH ROW
 -- -----------------------------------------------------
 -- Table `msc_albums`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `msc_albums`;
 
 CREATE TABLE IF NOT EXISTS `msc_albums` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -91,7 +93,6 @@ FOR EACH ROW
 -- -----------------------------------------------------
 -- Table `msc_album_tracks`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `msc_album_tracks`;
 
 CREATE TABLE IF NOT EXISTS `msc_album_tracks` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
