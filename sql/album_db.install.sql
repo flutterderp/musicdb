@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS `msc_artists`;
 
 CREATE TABLE IF NOT EXISTS `msc_artists` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` TEXT NOT NULL,
+  `artist_name` TEXT NOT NULL,
   `alt_name` VARCHAR(512) NOT NULL DEFAULT '',
   `description` TEXT,
   `language` VARCHAR(45) NOT NULL DEFAULT '',
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `msc_artists` (
   `modified` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `idx_name` (`name`(512) ASC),
+  INDEX `idx_name` (`artist_name`(512) ASC),
   INDEX `idx_alt_name` (`alt_name` ASC),
   INDEX `idx_language` (`language` ASC)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `msc_albums` (
     FOREIGN KEY (`artist_id`)
     REFERENCES `msc_artists` (`id`)
     ON DELETE CASCADE
-    ON UPDATE NO ACTION
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
 
 -- Trigger to update artist's created time
@@ -96,7 +96,7 @@ DROP TABLE IF EXISTS `msc_album_tracks`;
 CREATE TABLE IF NOT EXISTS `msc_album_tracks` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `album_id` INT(11) UNSIGNED NOT NULL DEFAULT 0 COMMENT '		',
-  `artist_id` INT(11) UNSIGNED NOT NULL DEFAULT 0,
+  `artist_id` INT(11) UNSIGNED DEFAULT 0,
   `title` TEXT NOT NULL,
   `track_number` INT(5) UNSIGNED NOT NULL DEFAULT 0,
   `disc_number` INT(5) UNSIGNED NOT NULL DEFAULT 1,
@@ -111,10 +111,13 @@ CREATE TABLE IF NOT EXISTS `msc_album_tracks` (
   CONSTRAINT `fk_track_album`
     FOREIGN KEY (`album_id`)
     REFERENCES `msc_albums` (`id`)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   CONSTRAINT `fk_track_artist`
     FOREIGN KEY (`artist_id`)
     REFERENCES `msc_artists` (`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;
 
 -- Trigger to update album track's created time
