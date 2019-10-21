@@ -27,7 +27,7 @@ class MusicLibrary
 		$options['password'] = $this->app->get('password', '');
 		$options['database'] = $config->db_name;
 		$options['prefix']   = $config->table_prefix;
-		$this->db            = JDatabaseDriver::getInstance($options);;
+		$this->db            = JDatabaseDriver::getInstance($options);
 		$this->query         = $this->db->getQuery(true);
 	}
 
@@ -110,7 +110,7 @@ class MusicLibrary
 		try
 		{
 			$this->db->setQuery($this->query);
-			$album_list = $this->db->getObjectList();
+			$album_list = $this->db->loadObjectList();
 		}
 		catch(Exception $e)
 		{
