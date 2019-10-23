@@ -15,9 +15,7 @@ $list  = $music->getArtistList();
 		<link href="media/css/style.css" rel="stylesheet">
 	</head>
 	<body>
-		<main class="wrapper" role="main">
-			<h1>Beep boop</h1>
-
+		<main class="wrapper">
 			<table class="music-library">
 				<thead>
 					<tr>
@@ -41,10 +39,10 @@ $list  = $music->getArtistList();
 
 							if(!isset($albums->error)) : ?>
 								<?php foreach($albums as $k => $album) : ?>
-									<tr class="music-library__album hide" data-toggle-content="<?php echo $item->id; ?>">
-										<td><?php echo htmlspecialchars($album->album_name, ENT_QUOTES, 'utf-8'); ?></td>
-										<td><?php echo htmlspecialchars($album->isbn, ENT_QUOTES, 'utf-8'); ?></td>
-										<td><?php echo htmlspecialchars($album->release_date, ENT_QUOTES, 'utf-8'); ?></td>
+									<tr class="music-library__album <?php echo $k%2 === 1 ? 'striped' : ''; ?>" data-toggle-content="<?php echo $item->id; ?>" hidden>
+										<td><?php echo nl2br($music->escape($album->album_name, true)); ?></td>
+										<td><?php echo $music->escape($album->isbn); ?></td>
+										<td><?php echo $music->escape($album->release_date); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							<?php endif; ?>
@@ -56,7 +54,7 @@ $list  = $music->getArtistList();
 			</table>
 		</main>
 
-		<footer role="">
+		<footer>
 
 		</footer>
 

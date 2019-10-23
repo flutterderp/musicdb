@@ -14,14 +14,15 @@ function clickListener(event) {
         toggle_id  = target.getAttribute('data-toggle-id');
 
     if(toggle_id !== null) {
-      let toggle_content = document.querySelectorAll('[data-toggle-content="'+toggle_id+'"]');
+      let toggle_content = document.querySelectorAll('[data-toggle-content]');
 
       toggle_content.forEach((tc, idx) => {
-        if(tc.classList.contains('hide')) {
-          tc.classList.remove('hide');
-        }
-        else {
-          tc.classList.add('hide');
+        if(tc.getAttribute('data-toggle-content') !== toggle_id) {
+          tc.setAttribute('hidden', '');
+        } else if(tc.hasAttribute('hidden') !== true) {
+          tc.setAttribute('hidden', '');
+        } else {
+          tc.removeAttribute('hidden');
         }
       })
 

@@ -38,6 +38,25 @@ class MusicLibrary
 	}
 
 	/**
+	 * Function to escape a text string
+	 * @param text string
+	 * @return escaped string
+	 */
+	function escape(string $text, bool $html = false)
+	{
+		if($html === true)
+		{
+			$escaped = htmlentities($text, ENT_COMPAT|ENT_HTML5, 'utf-8');
+		}
+		else
+		{
+			$escaped = htmlspecialchars($text, ENT_COMPAT|ENT_HTML5, 'utf-8');
+		}
+
+		return $escaped;
+	}
+
+	/**
 	 * Function to get a list of artists.
 	 *
 	 * @return artist_list object
