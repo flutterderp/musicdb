@@ -16,42 +16,34 @@ $list  = $music->getArtistList();
 	</head>
 	<body>
 		<main class="wrapper">
-			<table class="music-library">
-				<thead>
-					<tr>
-						<th aria-label="Album Title">&nbsp;</th>
-						<th aria-label="ISBN/Catalog #">ISBN/Catalog #</th>
-						<th aria-label="Release Date">Release Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php if(!isset($list->error)) : ?>
-						<?php foreach($list as $i => $item) : ?>
-							<tr class="music-library__artist">
-								<td colspan="3">
-									<a href="#" data-toggle-id="<?php echo $item->id; ?>">
-										<?php echo htmlspecialchars($item->artist_name, ENT_QUOTES, 'utf-8'); ?>
-									</a>
-								</td>
-							</tr>
-							<?php
-							$albums = $music->getAlbumList($item->id);
+			<div class="music-library">
+				<?php if(!isset($list->error)) : ?>
+					<?php foreach($list as $i => $item) : ?>
+						<section class="music-library__artist">
+							<a href="#" data-toggle-id="<?php echo $item->id; ?>">
+								<?php echo htmlspecialchars($item->artist_name, ENT_QUOTES, 'utf-8'); ?>
+							</a>
 
-							if(!isset($albums->error)) : ?>
-								<?php foreach($albums as $k => $album) : ?>
-									<tr class="music-library__album <?php echo $k%2 === 1 ? 'striped' : ''; ?>" data-toggle-content="<?php echo $item->id; ?>" hidden>
-										<td><?php echo nl2br($music->escape($album->album_name, true)); ?></td>
-										<td><?php echo $music->escape($album->isbn); ?></td>
-										<td><?php echo $music->escape($album->release_date); ?></td>
-									</tr>
-								<?php endforeach; ?>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					<?php else : ?>
-						<tr><td><?php echo $list->error; ?></td></tr>
-					<?php endif; ?>
-				</tbody>
-			</table>
+							<?php
+								$albums = $music->getAlbumList($item->id);
+
+								if(!isset($albums->error)) : ?>
+									<div class="music-library__album row">
+										<?php foreach($albums as $k => $album) : ?>
+											<div class="column hide-display" data-toggle-content="<?php echo $item->id; ?>">
+												<?php echo nl2br($music->escape($album->album_name, true)); ?><br>
+												<?php echo $music->escape($album->isbn); ?><br>
+												<?php echo $music->escape($album->release_date); ?>
+											</div>
+										<?php endforeach; ?>
+									</div>
+								<?php endif; ?>
+						</section>
+					<?php endforeach; ?>
+				<?php else : ?>
+					<p><?php echo $list->error; ?></p>
+				<?php endif; ?>
+			</div>
 		</main>
 
 		<footer>

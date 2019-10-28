@@ -20,14 +20,15 @@ thead th:not(:first-child) { min-width: 9.375rem; width: 15%; }
 thead th:not(:last-child) { border-right-color: #fefefe; }
 /* td > a:focus, td > a:hover, th > a:focus, th > a:hover { background: #fdf9fc; } */
 
-.hide, [hidden] { clip: rect(1px 1px 1px 1px); clip: rect(1px, 1px, 1px, 1px); height: 1px; overflow: hidden; position: absolute;
-  white-space: nowrap; width: 1px; }
+.hide-display { height: 0; opacity: 0; overflow: hidden; position: absolute; white-space: nowrap; width: 0; }
 
 /* Header/masthead styles */
 /* Copy/content area styles */
 .wrapper { margin: 2rem auto; max-width: 75rem; }
 
-.music-library__album { transition: all 0.3s; }
+.row { align-items: flex-start; display: flex; flex-flow: row wrap; justify-content: flex-start; }
+.column { flex: 1 1 25%; margin: 0.4375rem; max-width: 25%; padding: 0.4375rem; transition: all 0.5s; }
+
 .music-library__album td:not(:last-child) { border-right-color: #fefefe; }
 .music-library__artist td { border-bottom-style: dotted; border-bottom-width: 1px; border-top-style: dotted; border-top-width: 1px; }
 .music-library__artist a { display: block; }

@@ -18,11 +18,14 @@ function clickListener(event) {
 
       toggle_content.forEach((tc, idx) => {
         if(tc.getAttribute('data-toggle-content') !== toggle_id) {
-          tc.setAttribute('hidden', '');
-        } else if(tc.hasAttribute('hidden') !== true) {
-          tc.setAttribute('hidden', '');
+          tc.classList.add('hide-display');
+          // tc.setAttribute('hidden', '');
+        } else if(tc.classList.contains('hide-display') !== true) {
+          tc.classList.add('hide-display');
+          // tc.setAttribute('hidden', '');
         } else {
-          tc.removeAttribute('hidden');
+          tc.classList.remove('hide-display');
+          // tc.removeAttribute('hidden');
         }
       })
 
