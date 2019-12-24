@@ -29,7 +29,8 @@ thead th:not(:last-child) { border-right-color: #fefefe; }
 .column { align-self: stretch; flex: 1 1 auto; max-width: calc((100% - 46px) / 3); padding: 0.4375rem; width: calc((100% - 46px) / 3); }
 .row::before, .row::after { content: ''; display: table; margin: 0 auto; width: 100%; }
 
-.music-library__artist { margin: 0 auto 1.875rem; }
+.music-library { font-size: 0; text-align: center; }
+.music-library__artist { display: inline-block; margin: 0 0.625rem 1.875rem; text-align: left; vertical-align: top; width: calc((100% - 2.5rem) / 2); }
 .music-library__artist a { background: #f9fcfd; border: 0.0625rem solid #2974a7; color: #2974a7; display: block;
   font-family: 'Open Sans Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1.25rem; font-weight: bold; padding: 0.5rem 0.625rem; }
 .music-library__artist a:focus, .music-library__artist a:hover { background: #e9f3fa; border-color: #1a4868; color: #1a4868; }

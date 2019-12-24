@@ -13,6 +13,7 @@ $list  = $music->getArtistList();
 		<title>Music Library</title>
 		<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i|Open+Sans:400,700&display=swap" rel="stylesheet">
 		<link href="media/css/style.css" rel="stylesheet">
+		<script src="https://kit.fontawesome.com/31a434906f.js" crossorigin="anonymous" async defer></script>
 	</head>
 	<body>
 		<main class="wrapper">
@@ -31,7 +32,12 @@ $list  = $music->getArtistList();
 
 									<?php foreach($albums as $k => $album) : ?>
 										<div class="music-library__album row hide-display" data-toggle-content="<?php echo $item->id; ?>">
-											<div class="column "><?php echo nl2br($music->escape($album->album_name, true)); ?></div>
+											<div class="column ">
+												<?php echo nl2br($music->escape($album->album_name, true)); ?><br>
+												<?php echo $album->first_press == 'Yes' ? '<i class="fas fa-star" title="First press"></i>' : ''; ?>
+												<?php echo $album->limited_edition == 'Yes' ? '<i class="fas fa-history" title="Limited edition/availability"></i>' : ''; ?>
+												<?php echo $album->is_video == 'Yes' ? '<i class="fas fa-video" title="Video"></i>' : ''; ?>
+											</div>
 											<div class="column "><?php echo $music->escape($album->isbn); ?></div>
 											<div class="column "><?php echo $music->escape($album->release_date); ?></div>
 										</div>
