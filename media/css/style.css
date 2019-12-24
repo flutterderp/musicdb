@@ -21,6 +21,9 @@ thead th:not(:last-child) { border-right-color: #fefefe; }
 /* td > a:focus, td > a:hover, th > a:focus, th > a:hover { background: #fdf9fc; } */
 
 .hide-display { border: 0; height: 0; opacity: 0; overflow: hidden; position: absolute; white-space: nowrap; width: 0; }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
 
 /* Header/masthead styles */
 /* Copy/content area styles */
@@ -30,13 +33,18 @@ thead th:not(:last-child) { border-right-color: #fefefe; }
 .row::before, .row::after { content: ''; display: table; margin: 0 auto; width: 100%; }
 
 .music-library { font-size: 0; text-align: center; }
-.music-library__artist { display: inline-block; margin: 0 0.625rem 1.875rem; text-align: left; vertical-align: top; width: calc((100% - 2.5rem) / 2); }
+.music-library__artist { margin: 0 auto; text-align: left; }
 .music-library__artist a { background: #f9fcfd; border: 0.0625rem solid #2974a7; color: #2974a7; display: block;
-  font-family: 'Open Sans Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1.25rem; font-weight: bold; padding: 0.5rem 0.625rem; }
+  font-family: 'Open Sans Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1.25rem; font-weight: bold;
+  padding: 0.5rem 0.625rem; }
+.music-library__artist:not(:first-child) a { border-top-width: 0; }
 .music-library__artist a:focus, .music-library__artist a:hover { background: #e9f3fa; border-color: #1a4868; color: #1a4868; }
 .music-library__album > .column { border: 0.0625rem solid #2974a7; font-size: 0.875rem; }
 .music-library__album/* :not(:first-of-type) */ > .column { border-top-width: 0; }
+.music-library__album > .column:first-child { max-width: unset; width: calc((100% - 46px) / 2); }
 .music-library__album > .column:not(:first-child) { border-left-width: 0; }
+.music-library__album > .column:not(:last-child) { border-right-style: dotted; }
+.music-library__album:not(:last-child) > .column { border-bottom-style: dotted; }
 
 /* Footer styles */
 footer { margin: 2rem auto 0; min-height: 0.0625rem; }
