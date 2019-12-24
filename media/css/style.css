@@ -3,7 +3,7 @@
 body { background: #fefefe; color: #0a0a0a; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 16px; line-height: normal; }
 
-a { color: #a72974; text-decoration: none; transition: color 0.4s; }
+a { color: #a72974; text-decoration: none; }
 a:focus, a:hover { color: #d34b9c; text-decoration: underline; }
 h1, h2 { font-family: 'Open Sans Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: normal;
   margin: 0 auto 1.25rem; }
@@ -20,18 +20,22 @@ thead th:not(:first-child) { min-width: 9.375rem; width: 15%; }
 thead th:not(:last-child) { border-right-color: #fefefe; }
 /* td > a:focus, td > a:hover, th > a:focus, th > a:hover { background: #fdf9fc; } */
 
-.hide-display { height: 0; opacity: 0; overflow: hidden; position: absolute; white-space: nowrap; width: 0; }
+.hide-display { border: 0; height: 0; opacity: 0; overflow: hidden; position: absolute; white-space: nowrap; width: 0; }
 
 /* Header/masthead styles */
 /* Copy/content area styles */
 .wrapper { margin: 2rem auto; max-width: 75rem; }
+.row { align-items: flex-start; display: flex; flex-flow: row wrap; justify-content: flex-start; transition: all 0.45s; }
+.column { align-self: stretch; flex: 1 1 auto; max-width: calc((100% - 46px) / 3); padding: 0.4375rem; width: calc((100% - 46px) / 3); }
+.row::before, .row::after { content: ''; display: table; margin: 0 auto; width: 100%; }
 
-.row { align-items: flex-start; display: flex; flex-flow: row wrap; justify-content: flex-start; }
-.column { flex: 1 1 25%; margin: 0.4375rem; max-width: 25%; padding: 0.4375rem; transition: all 0.5s; }
-
-.music-library__album td:not(:last-child) { border-right-color: #fefefe; }
-.music-library__artist td { border-bottom-style: dotted; border-bottom-width: 1px; border-top-style: dotted; border-top-width: 1px; }
-.music-library__artist a { display: block; }
+.music-library__artist { margin: 0 auto 1.875rem; }
+.music-library__artist a { background: #f9fcfd; border: 0.0625rem solid #2974a7; color: #2974a7; display: block;
+  font-family: 'Open Sans Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1.25rem; font-weight: bold; padding: 0.5rem 0.625rem; }
+.music-library__artist a:focus, .music-library__artist a:hover { background: #e9f3fa; border-color: #1a4868; color: #1a4868; }
+.music-library__album > .column { border: 0.0625rem solid #2974a7; font-size: 0.875rem; }
+.music-library__album/* :not(:first-of-type) */ > .column { border-top-width: 0; }
+.music-library__album > .column:not(:first-child) { border-left-width: 0; }
 
 /* Footer styles */
 footer { margin: 2rem auto 0; min-height: 0.0625rem; }

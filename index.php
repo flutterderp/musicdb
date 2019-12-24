@@ -28,15 +28,15 @@ $list  = $music->getArtistList();
 								$albums = $music->getAlbumList($item->id);
 
 								if(!isset($albums->error)) : ?>
-									<div class="music-library__album row">
-										<?php foreach($albums as $k => $album) : ?>
-											<div class="column hide-display" data-toggle-content="<?php echo $item->id; ?>">
-												<?php echo nl2br($music->escape($album->album_name, true)); ?><br>
-												<?php echo $music->escape($album->isbn); ?><br>
-												<?php echo $music->escape($album->release_date); ?>
-											</div>
-										<?php endforeach; ?>
-									</div>
+
+									<?php foreach($albums as $k => $album) : ?>
+										<div class="music-library__album row hide-display" data-toggle-content="<?php echo $item->id; ?>">
+											<div class="column "><?php echo nl2br($music->escape($album->album_name, true)); ?></div>
+											<div class="column "><?php echo $music->escape($album->isbn); ?></div>
+											<div class="column "><?php echo $music->escape($album->release_date); ?></div>
+										</div>
+									<?php endforeach; ?>
+
 								<?php endif; ?>
 						</section>
 					<?php endforeach; ?>
