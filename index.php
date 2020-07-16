@@ -17,12 +17,14 @@ $list  = $music->getArtistList();
 	</head>
 	<body>
 		<main class="wrapper">
+			<h1>Music Library</h1>
+
 			<div class="music-library">
 				<?php if(!isset($list->error)) : ?>
 					<?php foreach($list as $i => $item) : ?>
 						<section class="music-library__artist">
 							<a href="#" data-toggle-id="<?php echo $item->id; ?>">
-								<?php echo htmlspecialchars($item->artist_name, ENT_QUOTES, 'utf-8'); ?>
+								<?php echo $music->escape($item->artist_name); ?>
 							</a>
 
 							<?php
@@ -52,9 +54,7 @@ $list  = $music->getArtistList();
 			</div>
 		</main>
 
-		<footer>
-
-		</footer>
+		<footer></footer>
 
 		<script src="media/js/app.js"></script>
 	</body>
