@@ -16,7 +16,7 @@ thead { background: #0a0a0a; color: #fefefe; font-family: 'Open Sans Condensed',
 td, th { border: 0 solid #0a0a0a; border-left-width: 0.0625rem; border-right-width: 0.0625rem; padding: 0.4375rem; }
 td > a, th > a { margin: -0.4375rem; padding: inherit; }
 thead th { border-color: #0a0a0a; border-bottom-width: 0.0625rem; }
-thead th:not(:first-child) { min-width: 9.375rem; width: 15%; }
+/* thead th:not(:first-child) { min-width: 9.375rem; width: 15%; } */
 thead th:not(:last-child) { border-right-color: #fefefe; }
 /* td > a:focus, td > a:hover, th > a:focus, th > a:hover { background: #fdf9fc; } */
 
@@ -32,8 +32,14 @@ thead th:not(:last-child) { border-right-color: #fefefe; }
 .column { align-self: stretch; flex: 1 1 auto; max-width: calc((100% - 46px) / 3); padding: 0.4375rem; width: calc((100% - 46px) / 3); }
 .row::before, .row::after { content: ''; display: table; margin: 0 auto; width: 100%; }
 
-.music-library { font-size: 0; text-align: center; }
-.music-library__artist { margin: 0 auto; text-align: left; }
+.music-library { width: 100%; }
+.music-library thead { background: #2974a7; }
+/* .music-library thead th { border-color: #2974a7; } */
+.music-library thead th:not(:last-child) { border-right-color: #fefefe; }
+
+.music-library th, .music-library td { border-color: #2974a7; border-bottom-width: 0.0625rem; }
+.music-library th:nth-child(n+3), .music-library td:nth-child(n+3) { width: 15%; }
+.music-library__artist { font-weight: 600; vertical-align: top; }
 .music-library__artist a { background: #f9fcfd; border: 0.0625rem solid #2974a7; color: #2974a7; display: block;
   font-family: 'Open Sans Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1.25rem; font-weight: bold;
   padding: 0.5rem 0.625rem; }

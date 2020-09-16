@@ -11,7 +11,7 @@ $list  = $music->getArtistList();
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="utf-8">
 		<title>Music Library</title>
-		<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,300i|Open+Sans:400,700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:ital,wght@0,300;1,300&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
 		<link href="media/css/style.css" rel="stylesheet">
 		<script src="https://kit.fontawesome.com/31a434906f.js" crossorigin="anonymous" async defer></script>
 	</head>
@@ -19,39 +19,39 @@ $list  = $music->getArtistList();
 		<main class="wrapper">
 			<h1>Music Library</h1>
 
-			<div class="music-library">
-				<?php if(!isset($list->error)) : ?>
+			<?php if($list->error) : ?>
+				<p><?php echo $list->error; ?></p>
+
+				<?php return false; ?>
+			<?php endif; ?>
+
+			<table class="music-library">
+				<thead>
+					<tr><th>Artist</th><th>Title</th><th>Catalog #</th><th>Release</th></tr>
+				</thead>
+				<tbody>
 					<?php foreach($list as $i => $item) : ?>
-						<section class="music-library__artist">
-							<a href="#" data-toggle-id="<?php echo $item->id; ?>">
-								<?php echo $music->escape($item->artist_name); ?>
-							</a>
+						<?php $albums = $music->getAlbumList($item->id); ?>
 
-							<?php
-								$albums = $music->getAlbumList($item->id);
-
-								if(!isset($albums->error)) : ?>
-
-									<?php foreach($albums as $k => $album) : ?>
-										<div class="music-library__album row hide-display" data-toggle-content="<?php echo $item->id; ?>">
-											<div class="column">
-												<?php echo nl2br($music->escape($album->album_name, true)); ?><br>
-												<?php echo $music->escape($album->isbn); ?><br>
-												<?php echo $album->first_press == 'Yes' ? '<i class="fas fa-star" title="First press"></i>' : ''; ?>
-												<?php echo $album->limited_edition == 'Yes' ? '<i class="fas fa-history" title="Limited edition/availability"></i>' : ''; ?>
-												<?php echo $album->is_video == 'Yes' ? '<i class="fas fa-video" title="Video"></i>' : ''; ?>
-											</div>
-											<div class="column"><?php echo $music->escape($album->release_date); ?></div>
-										</div>
-									<?php endforeach; ?>
-
+						<?php foreach($albums as $k => $album) : ?>
+							<tr class="music-library__album">
+								<?php if($k === 0) : ?>
+									<td class="music-library__artist" rowspan="<?php echo count($albums); ?>"><?php echo $music->escape($item->artist_name); ?></td>
 								<?php endif; ?>
-						</section>
+
+								<td>
+									<?php echo nl2br($music->escape($album->album_name, true)); ?><br>
+									<?php echo $album->first_press == 'Yes' ? '<i class="fas fa-star" title="First press"></i>' : ''; ?>
+									<?php echo $album->limited_edition == 'Yes' ? '<i class="fas fa-history" title="Limited edition/availability"></i>' : ''; ?>
+									<?php echo $album->is_video == 'Yes' ? '<i class="fas fa-video" title="Video"></i>' : ''; ?>
+								</td>
+								<td><?php echo $music->escape($album->isbn); ?></td>
+								<td><?php echo $music->escape($album->release_date); ?></td>
+							</tr>
+						<?php endforeach; ?>
 					<?php endforeach; ?>
-				<?php else : ?>
-					<p><?php echo $list->error; ?></p>
-				<?php endif; ?>
-			</div>
+				</tbody>
+			</table>
 		</main>
 
 		<footer></footer>
