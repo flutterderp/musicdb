@@ -25,6 +25,17 @@ $list  = $music->getArtistList();
 				<?php return false; ?>
 			<?php endif; ?>
 
+			<blockquote>
+				<p>
+					<?php echo $music->getTotalItems(); ?> items found, <?php echo $music->getTotalItems('video'); ?> of which are videos.<br>
+					<small>
+						<i class="fa fa-star" title="First press"></i> = First press<br>
+						<i class="fa fa-history" title="Limited edition/availability"></i> = Limited edition/availability<br>
+						<i class="fa fa-video" title="Video"></i> = Video
+					</small>
+				</p>
+			</blockquote>
+
 			<table class="music-library">
 				<thead>
 					<tr><th>Artist</th><th>Title</th><th>Catalog #</th><th>Release</th></tr>

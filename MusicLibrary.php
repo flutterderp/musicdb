@@ -7,6 +7,8 @@
 
 define('JPATH_BASE', $_SERVER['DOCUMENT_ROOT']);
 
+use Joomla\CMS\Factory;
+
 class MusicLibrary
 {
 	protected $app;
@@ -19,7 +21,7 @@ class MusicLibrary
 		require_once(JPATH_BASE . '/includes/framework.php');
 
 		$config              = json_decode(file_get_contents(JPATH_BASE . '/../msc_config.json'));
-		$this->app           = JFactory::getApplication('site');
+		$this->app           = Factory::getApplication('site');
 		$this->app->initialise();
 		$options['driver']   = $this->app->get('dbtype', 'mysqli');
 		$options['host']     = $this->app->get('host', 'localhost');
@@ -39,8 +41,8 @@ class MusicLibrary
 
 	/**
 	 * Function to escape a text string
-	 * @param text string
-	 * @return escaped string
+	 * @param string $text
+	 * @return string $escaped
 	 */
 	function escape(string $text, bool $html = false)
 	{
@@ -59,7 +61,7 @@ class MusicLibrary
 	/**
 	 * Function to get a list of artists.
 	 *
-	 * @return artist_list object
+	 * @return object $artist_list
 	 */
 	function getArtistList()
 	{
@@ -81,12 +83,53 @@ class MusicLibrary
 	}
 
 	/**
+	 * Function to get a total of items, albums, etc.
+	 *
+	 * @param string $type
+	 * @return int $result
+	 */
+	function getTotalItems(string $type = 'all')
+	{
+		$this->query->clear();
+
+		$this->query
+			->select('COUNT(*) as count')
+			->from($this->db->qn('#__albums', 'alb'));
+
+		switch($type)
+		{
+			case 'music' :
+				$this->query->where('alb.is_video = 0');
+				break;
+			case 'video' :
+				$this->query->where('alb.is_video = 1');
+				break;
+			case 'all' :
+			default :
+				break;
+		}
+
+		try
+		{
+			$this->db->setQuery($this->query);
+
+			$result = $this->db->loadResult();
+		}
+		catch(Exception $e)
+		{
+			$result = 0;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Function to get a list of albums. Optionally allows for limiting by artist, media type, and pressing.
 	 *
-	 * @param artist_id int
-	 * @param type string
-	 * @param first_press bool
-	 * @return album_list object
+	 * @param int $artist_id
+	 * @param string $type
+	 * @param bool $first_press
+	 * @return object $album_list
 	 */
 	function getAlbumList(int $artist_id = 0, string $type = '', bool $first_press = false)
 	{
@@ -129,6 +172,7 @@ class MusicLibrary
 		try
 		{
 			$this->db->setQuery($this->query);
+
 			$album_list = $this->db->loadObjectList();
 		}
 		catch(Exception $e)

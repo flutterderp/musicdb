@@ -5,10 +5,13 @@ body { background: #fefefe; color: #0a0a0a; font-family: 'Open Sans', 'Helvetica
 
 a { color: #a72974; text-decoration: none; }
 a:focus, a:hover { color: #d34b9c; text-decoration: underline; }
+blockquote { background: #fafafa; border: 0 solid #0a0a0a; border-left-width: 3px; margin: 27px auto; padding: 12px 0 12px 12px; }
+blockquote p:last-child { margin-bottom: 0; }
 h1, h2 { font-family: 'Open Sans Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: normal;
   margin: 0 auto 1.25rem; }
 h1 { font-size: 2.25rem; }
 h2 { font-size: 1.75rem; margin-top: 1.25rem; }
+p { margin: 0 auto 16px; }
 table { border: 0; border-collapse: collapse; border-spacing: 0; max-width: 100%; width: auto; }
 thead { background: #0a0a0a; color: #fefefe; font-family: 'Open Sans Condensed', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1.125rem; font-weight: normal; text-align: left; text-transform: uppercase; }
