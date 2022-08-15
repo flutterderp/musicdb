@@ -2,12 +2,19 @@
 /**
  * MusicLibrary class
  * @author herdyderp
- * @version 0.1.0
+ * @version 0.2.0
  */
 
 define('JPATH_BASE', $_SERVER['DOCUMENT_ROOT']);
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Version;
 
 class MusicLibrary
 {
@@ -20,9 +27,32 @@ class MusicLibrary
 		require_once(JPATH_BASE . '/includes/defines.php');
 		require_once(JPATH_BASE . '/includes/framework.php');
 
+		if(Version::MAJOR_VERSION === 4)
+		{
+			// swap session.web.site for session.web.administrator for admin apps
+			$container = Factory::getContainer();
+			$container->alias('session.web', 'session.web.site')
+				->alias('session', 'session.web.site')
+				->alias('JSession', 'session.web.site')
+				->alias(\Joomla\CMS\Session\Session::class, 'session.web.site')
+				->alias(\Joomla\Session\Session::class, 'session.web.site')
+				->alias(\Joomla\Session\SessionInterface::class, 'session.web.site');
+
+			$this->app = $container->get(\Joomla\CMS\Application\SiteApplication::class);
+			// $this->app = $container->get(\Joomla\CMS\Application\AdministratorApplication::class);
+			$this->app->createExtensionNamespaceMap(); // https://joomla.stackexchange.com/a/32146/41
+			$this->app->loadLanguage(); /* allows modules to render */
+
+			// Set the application as global app
+			Factory::$application = $this->app;
+		}
+		else
+		{
+			$this->app = Factory::getApplication('site');
+			$this->app->initialise();
+		}
+
 		$config              = json_decode(file_get_contents(JPATH_BASE . '/../msc_config.json'));
-		$this->app           = Factory::getApplication('site');
-		$this->app->initialise();
 		$options['driver']   = $this->app->get('dbtype', 'mysqli');
 		$options['host']     = $this->app->get('host', 'localhost');
 		$options['user']     = $this->app->get('user', '');
