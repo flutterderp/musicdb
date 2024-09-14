@@ -19,7 +19,7 @@ $list  = $music->getArtistList();
 		<main class="wrapper">
 			<h1>Music Library</h1>
 
-			<?php if($list->error) : ?>
+			<?php if (isset($list->error)) : ?>
 				<p><?php echo $list->error; ?></p>
 
 				<?php return false; ?>
@@ -41,12 +41,12 @@ $list  = $music->getArtistList();
 					<tr><th>Artist</th><th>Title</th><th>Catalog #</th><th>Release</th></tr>
 				</thead>
 				<tbody>
-					<?php foreach($list as $i => $item) : ?>
+					<?php foreach ($list as $i => $item) : ?>
 						<?php $albums = $music->getAlbumList($item->id); ?>
 
-						<?php foreach($albums as $k => $album) : ?>
+						<?php foreach ($albums as $k => $album) : ?>
 							<tr class="music-library__album">
-								<?php if($k === 0) : ?>
+								<?php if ($k === 0) : ?>
 									<td class="music-library__artist" rowspan="<?php echo count($albums); ?>"><?php echo $music->escape($item->artist_name); ?></td>
 								<?php endif; ?>
 
