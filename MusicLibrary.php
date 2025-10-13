@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Version;
+use Joomla\Database\DatabaseDriver;
 
 class MusicLibrary
 {
@@ -27,30 +28,22 @@ class MusicLibrary
 		require_once(JPATH_BASE . '/includes/defines.php');
 		require_once(JPATH_BASE . '/includes/framework.php');
 
-		if(Version::MAJOR_VERSION === 4)
-		{
-			// swap session.web.site for session.web.administrator for admin apps
-			$container = Factory::getContainer();
-			$container->alias('session.web', 'session.web.site')
-				->alias('session', 'session.web.site')
-				->alias('JSession', 'session.web.site')
-				->alias(\Joomla\CMS\Session\Session::class, 'session.web.site')
-				->alias(\Joomla\Session\Session::class, 'session.web.site')
-				->alias(\Joomla\Session\SessionInterface::class, 'session.web.site');
+		// swap session.web.site for session.web.administrator for admin apps
+		$container = Factory::getContainer();
+		$container->alias('session.web', 'session.web.site')
+			->alias('session', 'session.web.site')
+			->alias('JSession', 'session.web.site')
+			->alias(\Joomla\CMS\Session\Session::class, 'session.web.site')
+			->alias(\Joomla\Session\Session::class, 'session.web.site')
+			->alias(\Joomla\Session\SessionInterface::class, 'session.web.site');
 
-			$this->app = $container->get(\Joomla\CMS\Application\SiteApplication::class);
-			// $this->app = $container->get(\Joomla\CMS\Application\AdministratorApplication::class);
-			$this->app->createExtensionNamespaceMap(); // https://joomla.stackexchange.com/a/32146/41
-			$this->app->loadLanguage(); /* allows modules to render */
+		$this->app = $container->get(\Joomla\CMS\Application\SiteApplication::class);
+		// $this->app = $container->get(\Joomla\CMS\Application\AdministratorApplication::class);
+		$this->app->createExtensionNamespaceMap(); // https://joomla.stackexchange.com/a/32146/41
+		$this->app->loadLanguage(); /* allows modules to render */
 
-			// Set the application as global app
-			Factory::$application = $this->app;
-		}
-		else
-		{
-			$this->app = Factory::getApplication('site');
-			$this->app->initialise();
-		}
+		// Set the application as global app
+		Factory::$application = $this->app;
 
 		$config              = json_decode(file_get_contents(JPATH_BASE . '/../msc_config.json'));
 		$options['driver']   = $this->app->get('dbtype', 'mysqli');
@@ -59,7 +52,7 @@ class MusicLibrary
 		$options['password'] = $this->app->get('password', '');
 		$options['database'] = $config->db_name;
 		$options['prefix']   = $config->table_prefix;
-		$this->db            = JDatabaseDriver::getInstance($options);
+		$this->db            = DatabaseDriver::getInstance($options);
 		$this->query         = $this->db->getQuery(true);
 	}
 
@@ -76,7 +69,7 @@ class MusicLibrary
 	 */
 	function escape(string $text, bool $html = false)
 	{
-		if($html === true)
+		if ($html === true)
 		{
 			$escaped = htmlentities($text, ENT_COMPAT|ENT_HTML5, 'utf-8');
 		}
@@ -96,7 +89,7 @@ class MusicLibrary
 	function getArtistList()
 	{
 		$this->query->clear();
-		$this->query->select('*')->from($this->db->qn('#__artists'))->order('artist_name ASC');
+		$this->query->select('*')->from($this->db->quoteName('#__artists'))->order('artist_name ASC');
 
 		try
 		{
@@ -124,7 +117,7 @@ class MusicLibrary
 
 		$this->query
 			->select('COUNT(*) as count')
-			->from($this->db->qn('#__albums', 'alb'));
+			->from($this->db->quoteName('#__albums', 'alb'));
 
 		switch($type)
 		{
@@ -168,31 +161,31 @@ class MusicLibrary
 		$this->query
 			->select('alb.id AS album_id, alb.artist_id AS artist_id')
 			->select('alb.title AS album_name, art.artist_name, alb.isbn, alb.release_date')
-			->select('CASE WHEN alb.is_video = 1 THEN ' . $this->db->q('Yes') . ' ELSE ' . $this->db->q('No') . ' END AS is_video')
-			->select('CASE WHEN alb.is_limited = 1 THEN ' . $this->db->q('Yes') . ' ELSE ' . $this->db->q('No') . ' END AS limited_edition')
-			->select('CASE WHEN alb.is_first_press = 1 THEN ' . $this->db->q('Yes') . ' ELSE ' . $this->db->q('No') . ' END AS first_press')
+			->select('CASE WHEN alb.is_video = 1 THEN ' . $this->db->quote('Yes') . ' ELSE ' . $this->db->quote('No') . ' END AS is_video')
+			->select('CASE WHEN alb.is_limited = 1 THEN ' . $this->db->quote('Yes') . ' ELSE ' . $this->db->quote('No') . ' END AS limited_edition')
+			->select('CASE WHEN alb.is_first_press = 1 THEN ' . $this->db->quote('Yes') . ' ELSE ' . $this->db->quote('No') . ' END AS first_press')
 			->select('alb.num_discs, alb.description, alb.language')
-			->from($this->db->qn('#__albums', 'alb'))
-			->join('inner', $this->db->qn('#__artists', 'art') . ' ON art.id = alb.artist_id');
+			->from($this->db->quoteName('#__albums', 'alb'))
+			->join('inner', $this->db->quoteName('#__artists', 'art') . ' ON art.id = alb.artist_id');
 
 		//  Get albums from one artist only
-		if(is_int($artist_id) && $artist_id > 0)
+		if (is_int($artist_id) && $artist_id > 0)
 		{
 			$this->query->where('alb.artist_id = ' . (int) $artist_id);
 		}
 
 		// Get either videos or music albums only
-		if(is_string($type) && strtolower($type) === 'video')
+		if (is_string($type) && strtolower($type) === 'video')
 		{
 			$this->query->where('alb.is_video = 1');
 		}
-		elseif(is_string($type) && strtolower($type) === 'music')
+		elseif (is_string($type) && strtolower($type) === 'music')
 		{
 			$this->query->where('alb.is_video = 0');
 		}
 
 		// Get only first press albums
-		if(is_bool($first_press) && $first_press === true)
+		if (is_bool($first_press) && $first_press === true)
 		{
 			$this->query->where('is_first_press = 1');
 		}
