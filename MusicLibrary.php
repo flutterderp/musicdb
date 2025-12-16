@@ -5,7 +5,7 @@
  * @version 0.2.0
  */
 
-define('JPATH_BASE', $_SERVER['DOCUMENT_ROOT']);
+\define('JPATH_BASE', $_SERVER['DOCUMENT_ROOT']);
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -21,6 +21,7 @@ class MusicLibrary
 {
 	protected $app;
 	protected $db;
+	protected $query;
 
 	function __construct()
 	{
@@ -96,9 +97,9 @@ class MusicLibrary
 			$this->db->setQuery($this->query);
 			$artist_list = $this->db->loadObjectList();
 		}
-		catch(Exception $e)
+		catch(\Exception $e)
 		{
-			$artist_list        = new stdClass();
+			$artist_list        = new \stdClass();
 			$artist_list->error = $e->getCode() . ': ' . $e->getMessage();
 		}
 
@@ -138,7 +139,7 @@ class MusicLibrary
 
 			$result = $this->db->loadResult();
 		}
-		catch(Exception $e)
+		catch(\Exception $e)
 		{
 			$result = 0;
 		}
@@ -198,9 +199,9 @@ class MusicLibrary
 
 			$album_list = $this->db->loadObjectList();
 		}
-		catch(Exception $e)
+		catch(\Exception $e)
 		{
-			$album_list        = new stdClass();
+			$album_list        = new \stdClass();
 			$album_list->error = $e->getCode() . ': ' . $e->getMessage();
 		}
 
